@@ -1,64 +1,87 @@
+ 
 function getPin(){
     const pin = generatePin();
     const pinString = pin + '';
-    if(pinString.length === 4){
+
+    if(pinString.length ===4){
         return pin;
-    }
-    else{
-        // console.log('pin not 3 digit found', pin);
-        return getPin();
+    }else{
+        return getPin(); 
     }
 }
 
 function generatePin(){
-    const random = Math.round(Math.random()*10000);
-    return random;
+    let rendomIdGenerate = Math.round(Math.random()*10000);
+        
+    return rendomIdGenerate;
 }
+ //rendome pin generate
+ document.getElementById('generate-pin').addEventListener('click', () =>{
+       const pinGenerate =  getPin();
+       const displayPinElement = document.getElementById('display-pin');
+       displayPinElement.value = pinGenerate;
 
-document.getElementById('generate-pin').addEventListener('click', function(){
-    const pin = getPin();
-    // display Pin
-    const displayPinField = document.getElementById('display-pin');
-    displayPinField.value = pin;
-});
 
-document.getElementById('calculator').addEventListener('click', function(event){
-    const number = event.target.innerText;
-    const typedNumberField = document.getElementById('typed-numbers');
-    const previousTypedNumber = typedNumberField.value;
-    if(isNaN(number)){
-        if(number === 'C'){
-            typedNumberField.value = '';
-        }
-        else if (number === '<'){
-            const digits = previousTypedNumber.split('');
-            digits.pop();
-            const remainingDigits = digits.join('');
-            typedNumberField.value = remainingDigits;
-        }
-    }
-    else{
-        const newTypedNumber = previousTypedNumber + number;
-        typedNumberField.value = newTypedNumber;
-    }
-})
+       
+     //cleare display message
+     const failurMess = document.getElementById('pin-failure');
+     failurMess.style.display = 'none';
 
-document.getElementById('verify-pin').addEventListener('click', function(){
+        const SucessMess = document.getElementById('pin-success');
+        SucessMess.style.display = 'none';
+
+ })
+
+ document.getElementById('calculator').addEventListener('click', (even) =>{
+    //get clicked element
+    const numberString = even.target.innerText;
+
+    // get display number input field
+    const previousNumber = document.getElementById('typed-numbers'); 
+    const previousString = previousNumber.value;
+
+    //check number or string    
+     if(isNaN(numberString)){
+        if(numberString === 'C'){
+        
+            previousNumber.value = '';
+         }
+         if(numberString === "<"){ 
+            const convertArry = previousString.split("");
+            convertArry.pop();
+            const remainingDigits = convertArry.join(""); 
+            previousNumber.value = remainingDigits;
+
+         }
+     }else{ 
+        const finalNumber = previousString + numberString
+        previousNumber.value = finalNumber;
+     }
+
+
+    
+ })
+
+ document.getElementById('verify-pin').addEventListener('click', function(){
     const displayPinField = document.getElementById('display-pin');
     const currentPin = displayPinField.value;
 
-    const typedNumberField = document.getElementById('typed-numbers');
-    const typedNumber = typedNumberField.value;
+    const typePin = document.getElementById('typed-numbers');
+    const currentPinType = typePin.value;
 
-    const pinSuccessMessage = document.getElementById('pin-success');
-    const pinFailureMessage = document.getElementById('pin-failure');
+    if(currentPin === currentPinType){
+        const SucessMess = document.getElementById('pin-success');
+        SucessMess.style.display = 'block';
 
-    if(typedNumber === currentPin){
-        pinSuccessMessage.style.display = 'block';
-        pinFailureMessage.style.display = 'none';
+        const failurMess = document.getElementById('pin-failure');
+        failurMess.style.display = 'none';
+    }else{ 
+        const failurMess = document.getElementById('pin-failure');
+        failurMess.style.display = 'block';
+
+        const SucessMess = document.getElementById('pin-success');
+        SucessMess.style.display = 'none';
     }
-    else{
-        pinFailureMessage.style.display = 'block';
-        pinSuccessMessage.style.display = 'none';
-    }
-})
+
+
+ })
